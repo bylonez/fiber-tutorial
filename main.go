@@ -31,7 +31,7 @@ func main() {
 			Name: "Bob",
 			Age:  20,
 		}
-		//panic(common.SYSTEM_ERROR)
+		//panic(common.SystemError)
 		//panic("ab")
 		return c.JSON(common.Result{Data: data})
 	})
