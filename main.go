@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"fiber-tutorial/common"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/recover"
@@ -15,17 +14,7 @@ type User struct {
 
 func main() {
 	app := fiber.New(fiber.Config{
-		ErrorHandler: func(c *fiber.Ctx, err error) error {
-			code := fiber.StatusInternalServerError
-			var value common.Error
-			if errors.As(err, &value) == true {
-				code = int(value)
-			}
-			return c.Status(fiber.StatusInternalServerError).JSON(common.Result{
-				Code: code,
-				Msg:  err.Error()},
-			)
-		},
+		ErrorHandler: common.ErrorHandler,
 	})
 
 	// middleware
