@@ -27,11 +27,11 @@ func main() {
 	}))
 
 	app.Get("/", func(c *fiber.Ctx) error {
-		data := &User{
+		data := User{
 			Name: "Bob",
 			Age:  20,
 		}
-		//panic(common.SystemError)
+		//common.SystemError.Panic("aaa", "B")
 		//panic("ab")
 		return c.JSON(common.Result{Data: data})
 	})
