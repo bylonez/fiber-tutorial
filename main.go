@@ -2,7 +2,6 @@ package main
 
 import (
 	"fiber-tutorial/common"
-	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"log"
@@ -44,18 +43,7 @@ func main() {
 			Name: c.Query("name"),
 			Age:  c.QueryInt("age"),
 		}
-		myValidator := &common.XValidator{
-			Validator: common.Validate,
-		}
-		// Custom struct validation tag format
-		err := myValidator.Validator.RegisterValidation("teener", func(fl validator.FieldLevel) bool {
-			// User.Age needs to fit our needs, 12-18 years old.
-			return fl.Field().Int() >= 12 && fl.Field().Int() <= 18
-		})
-		if err != nil {
-			log.Fatal(err)
-		}
-		myValidator.Validate(user)
+		common.Valid(user)
 		return c.JSON(common.Result{Data: user})
 	})
 

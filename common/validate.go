@@ -1,16 +1,13 @@
 package common
 
-import "github.com/go-playground/validator/v10"
+import (
+	"github.com/go-playground/validator/v10"
+	"log"
+)
 
-type XValidator struct {
-	Validator *validator.Validate
-}
-
-// This is the Validator instance
-// for more information see: https://github.com/go-playground/validator
 var Validate = validator.New()
 
-func (v XValidator) Validate(data any) {
+func Valid(data any) {
 	errs := Validate.Struct(data)
 	if errs != nil {
 		var errors []string
@@ -18,5 +15,16 @@ func (v XValidator) Validate(data any) {
 			errors = append(errors, err.Error())
 		}
 		ParamInvalid.Panic(errors...)
+	}
+}
+
+func init() {
+	// Custom struct validation tag format
+	err := Validate.RegisterValidation("teener", func(fl validator.FieldLevel) bool {
+		// User.Age needs to fit our needs, 12-18 years old.
+		return fl.Field().Int() >= 12 && fl.Field().Int() <= 18
+	})
+	if err != nil {
+		log.Fatal(err)
 	}
 }
