@@ -2,12 +2,14 @@ package model
 
 import (
 	"gorm.io/gorm"
+	"time"
 )
 
 type User struct {
 	gorm.Model
-	Id   int    `gorm:"primaryKey"`
-	Name string `json:"name"`
+	Name     string    `gorm:"not null;size:32"`
+	Birthday time.Time `gorm:"type:date;not null"`
+	Gender   string    `gorm:"not null;size:32"`
 }
 
 func List() *[]User {
@@ -16,6 +18,7 @@ func List() *[]User {
 	return &users
 }
 
-func Create(user *User) {
+func Create(user *User) *User {
 	DBConn.Create(&user)
+	return user
 }

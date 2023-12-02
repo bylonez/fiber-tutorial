@@ -6,6 +6,7 @@ func List() *[]model.User {
 	return model.List()
 }
 
-func Create(user *model.User) {
-	model.Create(user)
+func Create(u *UserCreateCmd) *model.User {
+	user := model.Create(u.toUser())
+	return user
 }
