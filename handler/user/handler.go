@@ -2,7 +2,7 @@ package user
 
 import (
 	"fiber-tutorial/common"
-	userserv "fiber-tutorial/service/userserv"
+	"fiber-tutorial/service/userserv"
 	"github.com/gofiber/fiber/v2"
 )
 
