@@ -2,7 +2,7 @@ package common
 
 import (
 	"github.com/go-playground/validator/v10"
-	"log"
+	"github.com/gofiber/fiber/v2/log"
 )
 
 var Validate = validator.New()
@@ -16,6 +16,15 @@ func Valid(data any) {
 		}
 		ParamInvalid.Panic(errors...)
 	}
+}
+
+func Parse(data any, f func(out interface{}) error) {
+	err := f(data)
+	if err != nil {
+		log.Warn(err)
+		ParamInvalid.Panic()
+	}
+	Valid(data)
 }
 
 func init() {

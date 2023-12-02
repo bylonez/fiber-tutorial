@@ -14,12 +14,7 @@ func Handler(router fiber.Router) {
 
 	router.Post("/", func(c *fiber.Ctx) error {
 		user := &User{}
-		err := c.BodyParser(user)
-		if err != nil {
-			return err
-		}
-
-		common.Valid(user)
+		common.Parse(user, c.BodyParser)
 		realUser := model.User{
 			Name: user.Name,
 		}
