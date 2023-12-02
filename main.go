@@ -3,6 +3,7 @@ package main
 import (
 	"fiber-tutorial/common"
 	"fiber-tutorial/handler"
+	"fiber-tutorial/model"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"log"
@@ -23,6 +24,7 @@ func main() {
 	}))
 
 	handler.SetupHandler(app)
+	model.InitDB()
 
 	log.Fatal(app.Listen(":3000"))
 }

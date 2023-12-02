@@ -2,26 +2,28 @@ package user
 
 import (
 	"fiber-tutorial/common"
+	"fiber-tutorial/model"
+	"fiber-tutorial/service/userserv"
 	"github.com/gofiber/fiber/v2"
 )
 
 func Handler(router fiber.Router) {
 	router.Get("/", func(c *fiber.Ctx) error {
-		data := User{
-			Name: "Bob",
-			Age:  20,
-		}
-		//common.SystemError.Panic("aaa", "B")
-		//panic("ab")
-		return c.JSON(common.Result{Data: data})
+		return c.JSON(&common.Result{Data: userserv.List()})
 	})
 
 	router.Post("/", func(c *fiber.Ctx) error {
-		user := &User{
-			Name: c.Query("name"),
-			Age:  c.QueryInt("age"),
+		user := &User{}
+		err := c.BodyParser(user)
+		if err != nil {
+			return err
 		}
+
 		common.Valid(user)
-		return c.JSON(common.Result{Data: user})
+		realUser := model.User{
+			Name: user.Name,
+		}
+		userserv.Create(&realUser)
+		return c.JSON(&common.Result{Data: &realUser})
 	})
 }
