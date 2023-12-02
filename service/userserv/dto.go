@@ -36,3 +36,11 @@ func toDTO(u *model.User) *UserDTO {
 		Gender:   u.Gender,
 	}
 }
+
+func toDtos(users *[]*model.User) *[]*UserDTO {
+	var userDtos []*UserDTO
+	for _, user := range *users {
+		userDtos = append(userDtos, toDTO(user))
+	}
+	return &userDtos
+}
