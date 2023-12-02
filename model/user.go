@@ -12,8 +12,8 @@ type User struct {
 	Gender   string    `gorm:"not null;size:32"`
 }
 
-func List() *[]User {
-	var users []User
+func List() *[]*User {
+	var users []*User
 	DBConn.Find(&users)
 	return &users
 }

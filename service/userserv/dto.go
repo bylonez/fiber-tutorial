@@ -7,7 +7,7 @@ import (
 
 type (
 	UserDTO struct {
-		Id       int
+		Id       uint
 		Name     string
 		Birthday time.Time
 		Gender   string
@@ -25,5 +25,14 @@ func (c *UserCreateCmd) toUser() *model.User {
 		Name:     c.Name,
 		Birthday: c.Birthday,
 		Gender:   c.Gender,
+	}
+}
+
+func toDTO(u *model.User) *UserDTO {
+	return &UserDTO{
+		Id:       u.ID,
+		Name:     u.Name,
+		Birthday: u.Birthday,
+		Gender:   u.Gender,
 	}
 }
