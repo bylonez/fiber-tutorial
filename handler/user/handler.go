@@ -17,4 +17,11 @@ func Handler(router fiber.Router) {
 		user := userserv.Create(userCreateCmd)
 		return c.JSON(&common.Result{Data: user})
 	})
+
+	router.Put("/", func(c *fiber.Ctx) error {
+		userCreateCmd := &userserv.UserUpdateCmd{}
+		common.Parse(userCreateCmd, c.BodyParser)
+		user := userserv.Update(userCreateCmd)
+		return c.JSON(&common.Result{Data: user})
+	})
 }
