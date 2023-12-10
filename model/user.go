@@ -1,16 +1,16 @@
 package model
 
 import (
+	"fiber-tutorial/common/field"
 	"gorm.io/gorm"
-	"time"
 )
 
 type User struct {
 	gorm.Model
-	ID       uint      `gorm:"primarykey"`
-	Name     string    `gorm:"not null;size:32"`
-	Birthday time.Time `gorm:"type:date;not null"`
-	Gender   string    `gorm:"not null;size:32"`
+	ID       uint       `gorm:"primarykey"`
+	Name     string     `gorm:"not null;size:32"`
+	Birthday field.Date `gorm:"type:date;not null"`
+	Gender   string     `gorm:"not null;size:32"`
 }
 
 func ListUser() *[]*User {

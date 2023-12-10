@@ -1,28 +1,28 @@
 package userserv
 
 import (
+	"fiber-tutorial/common/field"
 	"fiber-tutorial/model"
-	"time"
 )
 
 type (
 	UserDTO struct {
 		Id       uint
 		Name     string
-		Birthday time.Time
+		Birthday field.Date
 		Gender   string
 	}
 
 	UserCreateCmd struct {
 		Name     string `validate:"required,min=3,max=20"`
-		Birthday time.Time
+		Birthday field.Date
 		Gender   string
 	}
 
 	UserUpdateCmd struct {
 		Id       uint
 		Name     string `validate:"required,min=3,max=20"`
-		Birthday time.Time
+		Birthday field.Date
 		Gender   string
 	}
 )
