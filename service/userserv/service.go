@@ -2,8 +2,8 @@ package userserv
 
 import "fiber-tutorial/model"
 
-func List() *[]*UserDTO {
-	return toDtos(model.ListUser())
+func List(query *model.UserQuery) *[]*UserDTO {
+	return toDtos(model.ListUser(query))
 }
 
 func Create(u *UserCreateCmd) *UserDTO {
