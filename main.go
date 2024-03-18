@@ -5,6 +5,7 @@ import (
 	"fiber-tutorial/handler"
 	"fiber-tutorial/model"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"log"
 )
@@ -21,6 +22,12 @@ func main() {
 		StackTraceHandler: func(c *fiber.Ctx, e interface{}) {
 			// todo log stack trace
 		},
+	}))
+
+	app.Use(logger.New(logger.Config{
+		Format:     "${time} ${status} - ${method} ${path}\n",
+		TimeFormat: "2006-01-02T15:04:05Z07:00",
+		TimeZone:   "Asia/Shanghai",
 	}))
 
 	handler.SetupHandler(app)
