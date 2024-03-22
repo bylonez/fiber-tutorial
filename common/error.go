@@ -11,6 +11,7 @@ const (
 	SystemError Error = 12300 + iota
 	ParamInvalid
 	CustomError
+	ExportEmptyData
 )
 
 // Panic with additional msg
@@ -25,6 +26,8 @@ func (e Error) desc() string {
 		return "system error"
 	case ParamInvalid:
 		return "param invalid"
+	case ExportEmptyData:
+		return "export empty data"
 	default:
 		return "error"
 	}

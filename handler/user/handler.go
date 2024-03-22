@@ -15,6 +15,18 @@ func Handler(router fiber.Router) {
 		common.Parse(userQuery, c.QueryParser)
 		return c.JSON(&common.Result{Data: userserv.List(userQuery)})
 	})
+	router.Post("/", func(c *fiber.Ctx) error {
+		userCreateCmd := &userserv.UserCreateCmd{}
+		common.Parse(userCreateCmd, c.BodyParser)
+		user := userserv.Create(userCreateCmd)
+		return c.JSON(&common.Result{Data: user})
+	})
+	router.Put("/", func(c *fiber.Ctx) error {
+		userCreateCmd := &userserv.UserUpdateCmd{}
+		common.Parse(userCreateCmd, c.BodyParser)
+		user := userserv.Update(userCreateCmd)
+		return c.JSON(&common.Result{Data: user})
+	})
 	router.Get("/test_di", func(c *fiber.Ctx) error {
 		return c.JSON(&common.Result{Data: servicei.UserService.Hello()})
 	})
@@ -31,17 +43,24 @@ func Handler(router fiber.Router) {
 		return c.JSON(&common.Result{Data: result})
 	})
 
-	router.Post("/", func(c *fiber.Ctx) error {
-		userCreateCmd := &userserv.UserCreateCmd{}
-		common.Parse(userCreateCmd, c.BodyParser)
-		user := userserv.Create(userCreateCmd)
-		return c.JSON(&common.Result{Data: user})
+	router.Get("/export", func(c *fiber.Ctx) error {
+		userQuery := &model.UserQuery{}
+		common.Parse(userQuery, c.QueryParser)
+		userDtos := userserv.List(userQuery)
+		var vos []userExportVO
+		for _, userDTO := range *userDtos {
+			vos = append(vos, userExportVO{
+				Id:       userDTO.Id,
+				Name:     userDTO.Name,
+				Birthday: userDTO.Birthday,
+				Gender:   userDTO.Gender,
+			})
+		}
+		if vos == nil {
+			common.ExportEmptyData.Panic()
+		}
+		common.WriteResponse(vos, c)
+		return nil
 	})
 
-	router.Put("/", func(c *fiber.Ctx) error {
-		userCreateCmd := &userserv.UserUpdateCmd{}
-		common.Parse(userCreateCmd, c.BodyParser)
-		user := userserv.Update(userCreateCmd)
-		return c.JSON(&common.Result{Data: user})
-	})
 }
