@@ -55,7 +55,7 @@ func WriteResponse[T any](objs []T, c *fiber.Ctx) {
 		if err != nil {
 			panic(err)
 		}
-		f.SetCellValue("Sheet1", cell, v)
+		f.SetCellValue("Sheet1", cell, v.head)
 	}
 	// body
 	for rowNum, obj := range objs {
