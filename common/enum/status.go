@@ -1,5 +1,7 @@
 package enum
 
+import "fiber-tutorial/common"
+
 type StatusEnum int
 
 const (
@@ -31,5 +33,5 @@ func init() {
 		StatusBEnum: {"b name", "b desc"},
 		StatusCEnum: {"c name", "c desc"},
 	}
-	StatusEnums = getKeys(m)
+	StatusEnums = common.GetSortedKeys(m)
 }

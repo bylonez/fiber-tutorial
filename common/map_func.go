@@ -1,11 +1,11 @@
-package enum
+package common
 
 import (
 	"cmp"
 	"slices"
 )
 
-func getKeys[TK cmp.Ordered, TV any](m map[TK]TV) []TK {
+func GetSortedKeys[TK cmp.Ordered, TV any](m map[TK]TV) []TK {
 	var keys []TK
 	for k := range m {
 		keys = append(keys, k)
