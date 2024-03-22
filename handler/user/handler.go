@@ -3,6 +3,7 @@ package user
 import (
 	"fiber-tutorial/common"
 	"fiber-tutorial/model"
+	"fiber-tutorial/service/servicei"
 	"fiber-tutorial/service/userserv"
 	"github.com/gofiber/fiber/v2"
 )
@@ -12,6 +13,9 @@ func Handler(router fiber.Router) {
 		userQuery := &model.UserQuery{}
 		common.Parse(userQuery, c.QueryParser)
 		return c.JSON(&common.Result{Data: userserv.List(userQuery)})
+	})
+	router.Get("/test", func(c *fiber.Ctx) error {
+		return c.JSON(&common.Result{Data: servicei.UserService.Hello()})
 	})
 
 	router.Post("/", func(c *fiber.Ctx) error {

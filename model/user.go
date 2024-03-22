@@ -21,7 +21,7 @@ type UserQuery struct {
 
 func ListUser(query *UserQuery) *[]*User {
 	var users []*User
-	DBConn.Limit(query.PageSize).Offset(query.Offset()).Find(&users)
+	DBConn.Order("created_at desc").Limit(query.PageSize).Offset(query.Offset()).Find(&users)
 	return &users
 }
 
