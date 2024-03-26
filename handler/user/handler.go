@@ -6,7 +6,10 @@ import (
 	"fiber-tutorial/model"
 	"fiber-tutorial/service/servicei"
 	"fiber-tutorial/service/userserv"
+	"fmt"
 	"github.com/gofiber/fiber/v2"
+	"github.com/xuri/excelize/v2"
+	"log"
 )
 
 func Handler(router fiber.Router) {
@@ -61,6 +64,43 @@ func Handler(router fiber.Router) {
 		}
 		common.WriteResponse(vos, c)
 		return nil
+	})
+
+	router.Post("/import", func(c *fiber.Ctx) error {
+		formFile, err := c.FormFile("file")
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		file, err := formFile.Open()
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer file.Close()
+
+		// 读取 Excel 文件内容
+		xlsx, err := excelize.OpenReader(file)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		// 遍历工作表
+		sheets := xlsx.GetSheetMap()
+		for _, sheetName := range sheets {
+			rows, err := xlsx.GetRows(sheetName)
+			if err != nil {
+				return err
+			}
+
+			for _, row := range rows {
+				for _, cell := range row {
+					fmt.Printf("%s\t", cell)
+				}
+				fmt.Println()
+			}
+		}
+
+		return c.JSON(&common.Result{})
 	})
 
 }

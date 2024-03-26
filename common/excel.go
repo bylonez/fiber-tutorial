@@ -1,40 +1,61 @@
 package common
 
 import (
+	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/xuri/excelize/v2"
+	"log"
 	"reflect"
+	"strconv"
 	"strings"
 )
 
-type excelTagType struct {
-	head string
+type exportTag struct {
+	Head string `json:"head"`
 }
 
-func parseExcelTag(obj any) []excelTagType {
-	t := reflect.TypeOf(obj)
-	var titles []excelTagType
-	for i := 0; i < t.NumField(); i++ {
-		field := t.Field(i)
-		tags := field.Tag.Get("excel")
-		excelTag := excelTagType{}
-		for _, i2 := range strings.Split(tags, ";") {
+type importTag struct {
+	Head string `json:"head"`
+}
+
+func parseTag[T any](obj any) []*T {
+	objType := reflect.TypeOf(obj)
+	var tags []*T
+	for iObj := 0; iObj < objType.NumField(); iObj++ {
+		objField := objType.Field(iObj)
+		tagsStr := objField.Tag.Get("excel")
+		tagMap := make(map[string]string)
+		for _, i2 := range strings.Split(tagsStr, ";") {
 			kv := strings.Split(i2, ":")
 			if len(kv) != 2 {
-				panic("invalid excel tag")
+				panic("invalid tag")
 			}
-			tagKey := kv[0]
-			tagValue := kv[1]
-			switch tagKey {
-			case "head":
-				excelTag.head = tagValue
-			default:
-				panic("invalid excel tag")
+			tagMap[kv[0]] = kv[1]
+		}
+		excelTag := new(T)
+		tagType := reflect.TypeFor[T]()
+		tagValue := reflect.ValueOf(excelTag).Elem()
+		for iTag := 0; iTag < tagType.NumField(); iTag++ {
+			field := tagType.Field(iTag)
+			strValue := tagMap[field.Tag.Get("json")]
+			if strValue != "" {
+				switch field.Type.Kind() {
+				case reflect.String:
+					tagValue.FieldByName(field.Name).SetString(strValue)
+				case reflect.Int:
+					intValue, err := strconv.ParseInt(strValue, 10, 64)
+					if err != nil {
+						log.Fatal(err)
+					}
+					tagValue.FieldByName(field.Name).SetInt(intValue)
+				default:
+					panic("unknown type")
+				}
 			}
 		}
-		titles = append(titles, excelTag)
+		tags = append(tags, excelTag)
 	}
-	return titles
+	return tags
 }
 
 func WriteResponse[T any](objs []T, c *fiber.Ctx) {
@@ -50,12 +71,12 @@ func WriteResponse[T any](objs []T, c *fiber.Ctx) {
 	}
 
 	// headline
-	for i, v := range parseExcelTag(objs[0]) {
+	for i, v := range parseTag[exportTag](objs[0]) {
 		cell, err := excelize.CoordinatesToCellName(i+1, 1)
 		if err != nil {
 			panic(err)
 		}
-		f.SetCellValue("Sheet1", cell, v.head)
+		f.SetCellValue("Sheet1", cell, v.Head)
 	}
 	// body
 	for rowNum, obj := range objs {
@@ -81,4 +102,68 @@ func WriteResponse[T any](objs []T, c *fiber.Ctx) {
 	filename := "export.xlsx"
 	c.Response().Header.Set("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 	c.Response().Header.Set("Content-Disposition", "attachment; filename="+filename)
+}
+
+func parseExcel(c *fiber.Ctx, key string, dto interface{}) ([]interface{}, error) {
+	formFile, err := c.FormFile(key)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	file, err := formFile.Open()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+
+	xlsx, err := excelize.OpenReader(file)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	//for _, sheetName := range xlsx.GetSheetList() {
+	//
+	//}
+
+	rows, err := xlsx.GetRows("Sheet1")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	headerMap := make(map[string]int)
+	for i, cell := range rows[0] {
+		headerMap[cell] = i
+	}
+
+	var dtos []interface{}
+	t := reflect.TypeOf(dto)
+	for _, row := range rows[1:] {
+		newDTO := reflect.New(t).Elem()
+		for i := 0; i < t.NumField(); i++ {
+			field := t.Field(i)
+			tag := field.Tag.Get("excel")
+			tagParts := strings.Split(tag, ":")
+			if len(tagParts) == 2 && tagParts[0] == "head" {
+				colIndex, ok := headerMap[tagParts[1]]
+				if ok {
+					cellValue := row[colIndex]
+					fieldValue := newDTO.Field(i)
+
+					switch field.Type.Kind() {
+					case reflect.String:
+						fieldValue.SetString(cellValue)
+					case reflect.Int:
+						intValue := 0
+						fmt.Sscanf(cellValue, "%d", &intValue)
+						fieldValue.SetInt(int64(intValue))
+					default:
+						panic("unhandled default case")
+					}
+				}
+			}
+		}
+		dtos = append(dtos, newDTO.Interface())
+	}
+
+	return dtos, nil
 }
