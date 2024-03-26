@@ -18,9 +18,9 @@ type importTag struct {
 	Head string `json:"head"`
 }
 
-func parseTag[T any](obj any) []*T {
-	objType := reflect.TypeOf(obj)
-	var tags []*T
+func parseTag[tagT, objT any]() []*tagT {
+	objType := reflect.TypeFor[objT]()
+	var tags []*tagT
 	for iObj := 0; iObj < objType.NumField(); iObj++ {
 		objField := objType.Field(iObj)
 		tagsStr := objField.Tag.Get("excel")
@@ -32,8 +32,8 @@ func parseTag[T any](obj any) []*T {
 			}
 			tagMap[kv[0]] = kv[1]
 		}
-		excelTag := new(T)
-		tagType := reflect.TypeFor[T]()
+		excelTag := new(tagT)
+		tagType := reflect.TypeFor[tagT]()
 		tagValue := reflect.ValueOf(excelTag).Elem()
 		for iTag := 0; iTag < tagType.NumField(); iTag++ {
 			field := tagType.Field(iTag)
@@ -71,7 +71,7 @@ func WriteResponse[T any](objs []T, c *fiber.Ctx) {
 	}
 
 	// headline
-	for i, v := range parseTag[exportTag](objs[0]) {
+	for i, v := range parseTag[exportTag, T]() {
 		cell, err := excelize.CoordinatesToCellName(i+1, 1)
 		if err != nil {
 			panic(err)

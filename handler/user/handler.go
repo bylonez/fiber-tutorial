@@ -78,13 +78,11 @@ func Handler(router fiber.Router) {
 		}
 		defer file.Close()
 
-		// 读取 Excel 文件内容
 		xlsx, err := excelize.OpenReader(file)
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		// 遍历工作表
 		sheets := xlsx.GetSheetMap()
 		for _, sheetName := range sheets {
 			rows, err := xlsx.GetRows(sheetName)
