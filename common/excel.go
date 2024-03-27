@@ -121,60 +121,57 @@ func ParseExcel[T any](c *fiber.Ctx, key string) []*T {
 		log.Fatal(err)
 	}
 
-	//for _, sheetName := range xlsx.GetSheetList() {
-	//
-	//}
-
-	rows, err := xlsx.GetRows("Sheet1")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// parse headline
-	headerMap := make(map[string]int)
-	for i, cell := range rows[0] {
-		headerMap[cell] = i
-	}
-	m := make(map[int]int)
-
-	for i, v := range parseTag[importTag, T]() {
-		headI, ok := headerMap[v.Head]
-		if ok {
-			m[i] = headI
-		}
-	}
-
 	var dtos []*T
-	dtoTypeR := reflect.TypeFor[T]()
-	for _, row := range rows[1:] {
-		dto := new(T)
-		dtoValue := reflect.ValueOf(dto).Elem()
-		for i := 0; i < dtoTypeR.NumField(); i++ {
-			field := dtoTypeR.Field(i)
-			colIndex, ok := m[i]
+	for _, sheetName := range xlsx.GetSheetList() {
+		rows, err := xlsx.GetRows(sheetName)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		// parse headline
+		headerMap := make(map[string]int)
+		for i, cell := range rows[0] {
+			headerMap[cell] = i
+		}
+		m := make(map[int]int)
+
+		for i, v := range parseTag[importTag, T]() {
+			headI, ok := headerMap[v.Head]
 			if ok {
-				if colIndex >= len(row) {
-					continue
-				}
-				cellValue := row[colIndex]
-				switch field.Type.Kind() {
-				case reflect.String:
-					dtoValue.Field(i).SetString(cellValue)
-				case reflect.Int:
-					intValue := 0
-					fmt.Sscanf(cellValue, "%d", &intValue)
-					dtoValue.Field(i).SetInt(int64(intValue))
-				case reflect.Uint:
-					var intValue uint
-					fmt.Sscanf(cellValue, "%d", &intValue)
-					dtoValue.Field(i).SetUint(uint64(intValue))
-				default:
-					panic("unhandled default case")
-				}
+				m[i] = headI
 			}
 		}
-		dtos = append(dtos, dto)
-	}
 
+		dtoTypeR := reflect.TypeFor[T]()
+		for _, row := range rows[1:] {
+			dto := new(T)
+			dtoValue := reflect.ValueOf(dto).Elem()
+			for i := 0; i < dtoTypeR.NumField(); i++ {
+				field := dtoTypeR.Field(i)
+				colIndex, ok := m[i]
+				if ok {
+					if colIndex >= len(row) {
+						continue
+					}
+					cellValue := row[colIndex]
+					switch field.Type.Kind() {
+					case reflect.String:
+						dtoValue.Field(i).SetString(cellValue)
+					case reflect.Int:
+						intValue := 0
+						fmt.Sscanf(cellValue, "%d", &intValue)
+						dtoValue.Field(i).SetInt(int64(intValue))
+					case reflect.Uint:
+						var intValue uint
+						fmt.Sscanf(cellValue, "%d", &intValue)
+						dtoValue.Field(i).SetUint(uint64(intValue))
+					default:
+						panic("unhandled default case")
+					}
+				}
+			}
+			dtos = append(dtos, dto)
+		}
+	}
 	return dtos
 }
