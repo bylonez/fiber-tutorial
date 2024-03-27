@@ -133,8 +133,8 @@ func ParseExcel[T any](c *fiber.Ctx, key string) []*T {
 		for i, cell := range rows[0] {
 			headerMap[cell] = i
 		}
-		m := make(map[int]int)
 
+		m := make(map[int]int)
 		for i, v := range parseTag[importTag, T]() {
 			headI, ok := headerMap[v.Head]
 			if ok {
