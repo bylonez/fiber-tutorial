@@ -104,7 +104,7 @@ func WriteResponse[T any](objs []T, c *fiber.Ctx) {
 	c.Response().Header.Set("Content-Disposition", "attachment; filename="+filename)
 }
 
-func parseExcel(c *fiber.Ctx, key string, dto interface{}) ([]interface{}, error) {
+func ParseExcel[T any](c *fiber.Ctx, key string) []*T {
 	formFile, err := c.FormFile(key)
 	if err != nil {
 		log.Fatal(err)
@@ -130,40 +130,51 @@ func parseExcel(c *fiber.Ctx, key string, dto interface{}) ([]interface{}, error
 		log.Fatal(err)
 	}
 
+	// parse headline
 	headerMap := make(map[string]int)
 	for i, cell := range rows[0] {
 		headerMap[cell] = i
 	}
+	m := make(map[int]int)
 
-	var dtos []interface{}
-	t := reflect.TypeOf(dto)
+	for i, v := range parseTag[importTag, T]() {
+		headI, ok := headerMap[v.Head]
+		if ok {
+			m[i] = headI
+		}
+	}
+
+	var dtos []*T
+	dtoTypeR := reflect.TypeFor[T]()
 	for _, row := range rows[1:] {
-		newDTO := reflect.New(t).Elem()
-		for i := 0; i < t.NumField(); i++ {
-			field := t.Field(i)
-			tag := field.Tag.Get("excel")
-			tagParts := strings.Split(tag, ":")
-			if len(tagParts) == 2 && tagParts[0] == "head" {
-				colIndex, ok := headerMap[tagParts[1]]
-				if ok {
-					cellValue := row[colIndex]
-					fieldValue := newDTO.Field(i)
-
-					switch field.Type.Kind() {
-					case reflect.String:
-						fieldValue.SetString(cellValue)
-					case reflect.Int:
-						intValue := 0
-						fmt.Sscanf(cellValue, "%d", &intValue)
-						fieldValue.SetInt(int64(intValue))
-					default:
-						panic("unhandled default case")
-					}
+		dto := new(T)
+		dtoValue := reflect.ValueOf(dto).Elem()
+		for i := 0; i < dtoTypeR.NumField(); i++ {
+			field := dtoTypeR.Field(i)
+			colIndex, ok := m[i]
+			if ok {
+				if colIndex >= len(row) {
+					continue
+				}
+				cellValue := row[colIndex]
+				switch field.Type.Kind() {
+				case reflect.String:
+					dtoValue.Field(i).SetString(cellValue)
+				case reflect.Int:
+					intValue := 0
+					fmt.Sscanf(cellValue, "%d", &intValue)
+					dtoValue.Field(i).SetInt(int64(intValue))
+				case reflect.Uint:
+					var intValue uint
+					fmt.Sscanf(cellValue, "%d", &intValue)
+					dtoValue.Field(i).SetUint(uint64(intValue))
+				default:
+					panic("unhandled default case")
 				}
 			}
 		}
-		dtos = append(dtos, newDTO.Interface())
+		dtos = append(dtos, dto)
 	}
 
-	return dtos, nil
+	return dtos
 }
