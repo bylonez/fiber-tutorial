@@ -4,10 +4,11 @@ go 1.22
 
 require (
 	github.com/go-playground/validator/v10 v10.19.0
-	github.com/gofiber/fiber/v2 v2.52.2
+	github.com/gofiber/fiber/v2 v2.52.4
+	github.com/sirupsen/logrus v1.9.3
 	github.com/xuri/excelize/v2 v2.8.1
 	gorm.io/driver/sqlite v1.5.5
-	gorm.io/gorm v1.25.8
+	gorm.io/gorm v1.25.9
 )
 
 require (

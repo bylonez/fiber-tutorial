@@ -37,7 +37,7 @@ func Handler(router fiber.Router) {
 			Name string
 			Desc string
 		}
-		result := []EnumResult{}
+		var result []EnumResult
 		for _, statusEnum := range enum.StatusEnums {
 			result = append(result, EnumResult{Name: statusEnum.Name(), Desc: statusEnum.Desc()})
 		}
