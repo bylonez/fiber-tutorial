@@ -4,9 +4,10 @@ go 1.22
 
 require (
 	github.com/go-playground/validator/v10 v10.19.0
+	github.com/gofiber/contrib/fiberzap/v2 v2.1.2
 	github.com/gofiber/fiber/v2 v2.52.4
-	github.com/sirupsen/logrus v1.9.3
 	github.com/xuri/excelize/v2 v2.8.1
+	go.uber.org/zap v1.26.0
 	gorm.io/driver/sqlite v1.5.5
 	gorm.io/gorm v1.25.9
 )
@@ -34,6 +35,7 @@ require (
 	github.com/valyala/tcplisten v1.0.0 // indirect
 	github.com/xuri/efp v0.0.0-20231025114914-d1ff6096ae53 // indirect
 	github.com/xuri/nfp v0.0.0-20240318013403-ab9948c2c4a7 // indirect
+	go.uber.org/multierr v1.10.0 // indirect
 	golang.org/x/crypto v0.21.0 // indirect
 	golang.org/x/net v0.22.0 // indirect
 	golang.org/x/sys v0.18.0 // indirect

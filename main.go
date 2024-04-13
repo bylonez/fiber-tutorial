@@ -5,11 +5,12 @@ import (
 	"fiber-tutorial/handler"
 	"fiber-tutorial/model"
 	_ "fiber-tutorial/service/servicedi"
+	"github.com/gofiber/contrib/fiberzap/v2"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
-	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/gofiber/fiber/v2/middleware/requestid"
+	"go.uber.org/zap"
 	"runtime/debug"
 )
 
@@ -22,10 +23,12 @@ func main() {
 	// request id
 	app.Use(requestid.New())
 	// logger
-	app.Use(logger.New(logger.Config{
-		Format:     "${time} ${status} - ${method} ${path} ${locals:requestid} ${latency}\n",
-		TimeFormat: "2006-01-02T15:04:05Z07:00",
-		TimeZone:   "Asia/Shanghai",
+	logger, _ := zap.NewProduction()
+	log.SetLogger(fiberzap.NewLogger(fiberzap.LoggerConfig{
+		SetLogger: logger,
+	}))
+	app.Use(fiberzap.New(fiberzap.Config{
+		Logger: logger,
 	}))
 	// recover from panic and log
 	app.Use(recover.New(recover.Config{
@@ -34,7 +37,6 @@ func main() {
 			log.Errorf("[PANIC RECOVER] %s\n%s", e, debug.Stack())
 		},
 	}))
-	// todo logger format
 
 	handler.SetupHandler(app)
 	model.InitDB()
