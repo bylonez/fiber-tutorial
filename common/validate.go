@@ -10,7 +10,7 @@ var Validate = validator.New()
 func Valid(data any) {
 	errs := Validate.Struct(data)
 	if errs != nil {
-		var errors []string
+		var errors []any
 		for _, err := range errs.(validator.ValidationErrors) {
 			errors = append(errors, err.Error())
 		}
