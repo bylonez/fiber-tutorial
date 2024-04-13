@@ -7,14 +7,16 @@ import (
 
 // ErrorHandler handle panic
 func ErrorHandler(c *fiber.Ctx, err error) error {
-	code := fiber.StatusInternalServerError
+	statusCode := fiber.StatusInternalServerError
+	resultCode := fiber.StatusInternalServerError
 	var value ErrorStruct
 	// if custom ErrorStruct, use code
 	if errors.As(err, &value) == true {
-		code = int(value.err)
+		statusCode = fiber.StatusBadRequest
+		resultCode = int(value.err)
 	}
-	return c.Status(fiber.StatusInternalServerError).JSON(Result{
-		Code: code,
+	return c.Status(statusCode).JSON(Result{
+		Code: resultCode,
 		Msg:  err.Error()},
 	)
 }

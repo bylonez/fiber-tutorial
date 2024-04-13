@@ -23,7 +23,7 @@ func main() {
 	// request id
 	app.Use(requestid.New())
 	// logger
-	logger, _ := zap.NewProduction()
+	logger, _ := zap.NewDevelopment()
 	log.SetLogger(fiberzap.NewLogger(fiberzap.LoggerConfig{
 		SetLogger: logger,
 	}))
@@ -34,7 +34,10 @@ func main() {
 	app.Use(recover.New(recover.Config{
 		EnableStackTrace: true,
 		StackTraceHandler: func(c *fiber.Ctx, e interface{}) {
-			log.Errorf("[PANIC RECOVER] %s\n%s", e, debug.Stack())
+			_, ok := e.(common.ErrorStruct)
+			if !ok {
+				log.Errorf("[PANIC RECOVER] %s\n%s", e, debug.Stack())
+			}
 		},
 	}))
 
