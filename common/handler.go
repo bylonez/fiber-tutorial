@@ -9,8 +9,8 @@ import (
 func ErrorHandler(c *fiber.Ctx, err error) error {
 	statusCode := fiber.StatusInternalServerError
 	resultCode := fiber.StatusInternalServerError
-	var value ErrorStruct
-	// if custom ErrorStruct, use code
+	var value ErrorPanic
+	// if custom ErrorPanic, use code
 	if errors.As(err, &value) == true {
 		statusCode = fiber.StatusBadRequest
 		resultCode = int(value.err)

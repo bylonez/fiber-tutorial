@@ -15,7 +15,7 @@ const (
 
 // Panic with additional msg
 func (e Error) Panic(msg ...any) {
-	panic(ErrorStruct{err: e, msg: msg})
+	panic(ErrorPanic{err: e, msg: msg})
 }
 
 // desc plain text description
@@ -34,12 +34,12 @@ func (e Error) desc() string {
 	}
 }
 
-type ErrorStruct struct {
+type ErrorPanic struct {
 	err Error
 	msg []any
 }
 
 // Error implements error interface
-func (s ErrorStruct) Error() string {
+func (s ErrorPanic) Error() string {
 	return fmt.Sprintf(s.err.desc(), s.msg...)
 }

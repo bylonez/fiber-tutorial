@@ -34,7 +34,7 @@ func main() {
 	app.Use(recover.New(recover.Config{
 		EnableStackTrace: true,
 		StackTraceHandler: func(c *fiber.Ctx, e interface{}) {
-			_, ok := e.(common.ErrorStruct)
+			_, ok := e.(common.ErrorPanic)
 			if !ok {
 				log.Errorf("[PANIC RECOVER] %s\n%s", e, debug.Stack())
 			}
