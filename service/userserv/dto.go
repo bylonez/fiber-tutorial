@@ -53,10 +53,10 @@ func toDTO(u *model.User) *UserDTO {
 	}
 }
 
-func toDtos(users *[]*model.User) *[]*UserDTO {
+func toDtos(users []*model.User) []*UserDTO {
 	var userDtos []*UserDTO
-	for _, user := range *users {
+	for _, user := range users {
 		userDtos = append(userDtos, toDTO(user))
 	}
-	return &userDtos
+	return userDtos
 }

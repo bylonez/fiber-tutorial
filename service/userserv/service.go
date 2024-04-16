@@ -16,7 +16,7 @@ func (u UserServiceImpl) Hello() string {
 	return servicei.TestService.Hello2()
 }
 
-func List(query *model.UserQuery) *[]*UserDTO {
+func List(query *model.UserQuery) []*UserDTO {
 	return toDtos(model.ListUser(query))
 }
 

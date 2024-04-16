@@ -19,10 +19,10 @@ type UserQuery struct {
 	Name string
 }
 
-func ListUser(query *UserQuery) *[]*User {
+func ListUser(query *UserQuery) []*User {
 	var users []*User
 	DBConn.Order("created_at desc").Limit(query.PageSize).Offset(query.Offset()).Find(&users)
-	return &users
+	return users
 }
 
 func CreateUser(user *User) *User {
