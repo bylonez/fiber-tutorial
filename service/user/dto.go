@@ -1,4 +1,4 @@
-package userserv
+package user
 
 import (
 	"fiber-tutorial/common/field"

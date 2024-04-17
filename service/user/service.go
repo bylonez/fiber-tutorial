@@ -1,8 +1,8 @@
-package userserv
+package user
 
 import (
 	"fiber-tutorial/model"
-	"fiber-tutorial/service/servicei"
+	"fiber-tutorial/service"
 )
 
 type UserServiceImpl struct {
@@ -13,7 +13,7 @@ func (u UserServiceImpl) Hello3() string {
 }
 
 func (u UserServiceImpl) Hello() string {
-	return servicei.TestService.Hello2()
+	return service.TestService.Hello2()
 }
 
 func List(query *model.UserQuery) []*UserDTO {
@@ -31,5 +31,5 @@ func Update(u *UserUpdateCmd) *UserDTO {
 }
 
 func init() {
-	servicei.UserService = UserServiceImpl{}
+	service.UserService = UserServiceImpl{}
 }

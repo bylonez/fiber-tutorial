@@ -4,7 +4,7 @@ import (
 	"fiber-tutorial/common"
 	"fiber-tutorial/handler"
 	"fiber-tutorial/model"
-	_ "fiber-tutorial/service/servicedi"
+	_ "fiber-tutorial/service/di"
 	"github.com/gofiber/contrib/fiberzap/v2"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"

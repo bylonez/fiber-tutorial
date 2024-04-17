@@ -1,4 +1,4 @@
-package servicei
+package service
 
 type UserServiceI interface {
 	Hello() string
