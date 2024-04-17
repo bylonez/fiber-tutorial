@@ -5,7 +5,7 @@ import (
 	"fiber-tutorial/common/enum"
 	"fiber-tutorial/model"
 	"fiber-tutorial/service"
-	"fiber-tutorial/service/user"
+	user2 "fiber-tutorial/service/impl/user"
 	"fmt"
 	"github.com/gofiber/fiber/v2"
 )
@@ -14,18 +14,18 @@ func Handler(router fiber.Router) {
 	router.Get("/", func(c *fiber.Ctx) error {
 		userQuery := &model.UserQuery{}
 		common.Parse(userQuery, c.QueryParser)
-		return c.JSON(&common.Result{Data: user.List(userQuery)})
+		return c.JSON(&common.Result{Data: user2.List(userQuery)})
 	})
 	router.Post("/", func(c *fiber.Ctx) error {
-		userCreateCmd := &user.UserCreateCmd{}
+		userCreateCmd := &user2.UserCreateCmd{}
 		common.Parse(userCreateCmd, c.BodyParser)
-		user := user.Create(userCreateCmd)
+		user := user2.Create(userCreateCmd)
 		return c.JSON(&common.Result{Data: user})
 	})
 	router.Put("/", func(c *fiber.Ctx) error {
-		userCreateCmd := &user.UserUpdateCmd{}
+		userCreateCmd := &user2.UserUpdateCmd{}
 		common.Parse(userCreateCmd, c.BodyParser)
-		user := user.Update(userCreateCmd)
+		user := user2.Update(userCreateCmd)
 		return c.JSON(&common.Result{Data: user})
 	})
 	router.Get("/test_di", func(c *fiber.Ctx) error {
@@ -47,7 +47,7 @@ func Handler(router fiber.Router) {
 	router.Get("/export", func(c *fiber.Ctx) error {
 		userQuery := &model.UserQuery{}
 		common.Parse(userQuery, c.QueryParser)
-		userDtos := user.List(userQuery)
+		userDtos := user2.List(userQuery)
 		var vos []userExportVO
 		for _, userDTO := range userDtos {
 			vos = append(vos, userExportVO{

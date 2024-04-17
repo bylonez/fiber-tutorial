@@ -6,6 +6,16 @@ import (
 	"gorm.io/gorm"
 )
 
+// UserQueries struct for queries from User model.
+type UserQueries struct {
+	*gorm.DB
+}
+
+func (q *UserQueries) CreateUser(user *User) *User {
+	q.Create(&user)
+	return user
+}
+
 type User struct {
 	gorm.Model
 	ID       uint       `gorm:"primarykey"`
