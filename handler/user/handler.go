@@ -3,7 +3,6 @@ package user
 import (
 	"fiber-tutorial/common"
 	"fiber-tutorial/common/enum"
-	"fiber-tutorial/model"
 	"fiber-tutorial/service/userservice"
 	"fmt"
 	"github.com/gofiber/fiber/v2"
@@ -11,7 +10,7 @@ import (
 
 func Handler(router fiber.Router) {
 	router.Get("/", func(c *fiber.Ctx) error {
-		userQuery := &model.UserQuery{}
+		userQuery := &userservice.UserQuery{}
 		common.Parse(userQuery, c.QueryParser)
 		return c.JSON(&common.Result{Data: userservice.Service.List(userQuery)})
 	})
@@ -44,7 +43,7 @@ func Handler(router fiber.Router) {
 	})
 
 	router.Get("/export", func(c *fiber.Ctx) error {
-		userQuery := &model.UserQuery{}
+		userQuery := &userservice.UserQuery{}
 		common.Parse(userQuery, c.QueryParser)
 		userDtos := userservice.Service.List(userQuery)
 		var vos []userExportVO

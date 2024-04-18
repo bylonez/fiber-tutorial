@@ -3,7 +3,7 @@ package main
 import (
 	"fiber-tutorial/common"
 	"fiber-tutorial/handler"
-	"fiber-tutorial/model"
+	_ "fiber-tutorial/model"
 	_ "fiber-tutorial/service/init"
 	"github.com/gofiber/contrib/fiberzap/v2"
 	"github.com/gofiber/fiber/v2"
@@ -42,7 +42,6 @@ func main() {
 	}))
 
 	handler.Route(app)
-	model.InitDB()
 
 	log.Fatal(app.Listen(":3000"))
 }

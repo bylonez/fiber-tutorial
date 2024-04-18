@@ -1,8 +1,8 @@
 package userservice
 
 import (
+	"fiber-tutorial/common"
 	"fiber-tutorial/common/field"
-	"fiber-tutorial/model"
 )
 
 type (
@@ -25,38 +25,9 @@ type (
 		Birthday field.Date
 		Gender   string
 	}
+
+	UserQuery struct {
+		common.PageQuery
+		Name string
+	}
 )
-
-func (c *UserCreateCmd) ToUser() *model.User {
-	return &model.User{
-		Name:     c.Name,
-		Birthday: c.Birthday,
-		Gender:   c.Gender,
-	}
-}
-
-func (c *UserUpdateCmd) ToUser() *model.User {
-	return &model.User{
-		ID:       c.Id,
-		Name:     c.Name,
-		Birthday: c.Birthday,
-		Gender:   c.Gender,
-	}
-}
-
-func ToDTO(u *model.User) *UserDTO {
-	return &UserDTO{
-		Id:       u.ID,
-		Name:     u.Name,
-		Birthday: u.Birthday,
-		Gender:   u.Gender,
-	}
-}
-
-func ToDtos(users []*model.User) []*UserDTO {
-	var userDtos []*UserDTO
-	for _, user := range users {
-		userDtos = append(userDtos, ToDTO(user))
-	}
-	return userDtos
-}
