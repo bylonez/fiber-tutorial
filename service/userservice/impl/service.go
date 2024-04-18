@@ -6,7 +6,10 @@ import (
 	"fiber-tutorial/service/userservice"
 )
 
-type service struct {
+type service struct{}
+
+func init() {
+	userservice.Service = &service{}
 }
 
 func (s *service) Hello3() string {
@@ -29,8 +32,4 @@ func (s *service) Create(cmd *userservice.UserCreateCmd) *userservice.UserDTO {
 func (s *service) Update(cmd *userservice.UserUpdateCmd) *userservice.UserDTO {
 	user := model.UpdateUser(cmd.ToUser())
 	return userservice.ToDTO(user)
-}
-
-func init() {
-	userservice.Service = &service{}
 }
