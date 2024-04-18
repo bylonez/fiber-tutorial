@@ -1,4 +1,4 @@
-package service
+package testservice
 
 type TestServiceI interface {
 	Hello2() string

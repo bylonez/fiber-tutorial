@@ -6,6 +6,6 @@ import (
 )
 
 func Route(app *fiber.App) {
-	user.Handler(app.Group("/user"))
+	user.Handler(app.Group("/userservice"))
 
 }

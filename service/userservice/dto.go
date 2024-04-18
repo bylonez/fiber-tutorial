@@ -1,4 +1,4 @@
-package user
+package userservice
 
 import (
 	"fiber-tutorial/common/field"
@@ -27,7 +27,7 @@ type (
 	}
 )
 
-func (c *UserCreateCmd) toUser() *model.User {
+func (c *UserCreateCmd) ToUser() *model.User {
 	return &model.User{
 		Name:     c.Name,
 		Birthday: c.Birthday,
@@ -35,7 +35,7 @@ func (c *UserCreateCmd) toUser() *model.User {
 	}
 }
 
-func (c *UserUpdateCmd) toUser() *model.User {
+func (c *UserUpdateCmd) ToUser() *model.User {
 	return &model.User{
 		ID:       c.Id,
 		Name:     c.Name,
@@ -44,7 +44,7 @@ func (c *UserUpdateCmd) toUser() *model.User {
 	}
 }
 
-func toDTO(u *model.User) *UserDTO {
+func ToDTO(u *model.User) *UserDTO {
 	return &UserDTO{
 		Id:       u.ID,
 		Name:     u.Name,
@@ -53,10 +53,10 @@ func toDTO(u *model.User) *UserDTO {
 	}
 }
 
-func toDtos(users []*model.User) []*UserDTO {
+func ToDtos(users []*model.User) []*UserDTO {
 	var userDtos []*UserDTO
 	for _, user := range users {
-		userDtos = append(userDtos, toDTO(user))
+		userDtos = append(userDtos, ToDTO(user))
 	}
 	return userDtos
 }
