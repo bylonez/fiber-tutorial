@@ -9,7 +9,7 @@ type TestServiceImpl struct {
 }
 
 func (t TestServiceImpl) Hello2() string {
-	return userservice.UserService.Hello3()
+	return userservice.Service.Hello3()
 }
 
 func init() {

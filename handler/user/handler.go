@@ -13,22 +13,22 @@ func Handler(router fiber.Router) {
 	router.Get("/", func(c *fiber.Ctx) error {
 		userQuery := &model.UserQuery{}
 		common.Parse(userQuery, c.QueryParser)
-		return c.JSON(&common.Result{Data: userservice.UserService.List(userQuery)})
+		return c.JSON(&common.Result{Data: userservice.Service.List(userQuery)})
 	})
 	router.Post("/", func(c *fiber.Ctx) error {
 		userCreateCmd := &userservice.UserCreateCmd{}
 		common.Parse(userCreateCmd, c.BodyParser)
-		user := userservice.UserService.Create(userCreateCmd)
+		user := userservice.Service.Create(userCreateCmd)
 		return c.JSON(&common.Result{Data: user})
 	})
 	router.Put("/", func(c *fiber.Ctx) error {
 		userCreateCmd := &userservice.UserUpdateCmd{}
 		common.Parse(userCreateCmd, c.BodyParser)
-		user := userservice.UserService.Update(userCreateCmd)
+		user := userservice.Service.Update(userCreateCmd)
 		return c.JSON(&common.Result{Data: user})
 	})
 	router.Get("/test_di", func(c *fiber.Ctx) error {
-		return c.JSON(&common.Result{Data: userservice.UserService.Hello()})
+		return c.JSON(&common.Result{Data: userservice.Service.Hello()})
 	})
 
 	router.Get("/enums", func(c *fiber.Ctx) error {
@@ -46,7 +46,7 @@ func Handler(router fiber.Router) {
 	router.Get("/export", func(c *fiber.Ctx) error {
 		userQuery := &model.UserQuery{}
 		common.Parse(userQuery, c.QueryParser)
-		userDtos := userservice.UserService.List(userQuery)
+		userDtos := userservice.Service.List(userQuery)
 		var vos []userExportVO
 		for _, userDTO := range userDtos {
 			vos = append(vos, userExportVO{

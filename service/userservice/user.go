@@ -4,7 +4,7 @@ import (
 	"fiber-tutorial/model"
 )
 
-type UserServiceI interface {
+type service interface {
 	Hello() string
 	Hello3() string
 	List(query *model.UserQuery) []*UserDTO
@@ -12,4 +12,4 @@ type UserServiceI interface {
 	Update(cmd *UserUpdateCmd) *UserDTO
 }
 
-var UserService UserServiceI
+var Service service
