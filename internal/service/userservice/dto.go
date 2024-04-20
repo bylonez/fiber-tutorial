@@ -1,8 +1,8 @@
 package userservice
 
 import (
-	"fiber-tutorial/common"
-	"fiber-tutorial/common/field"
+	"fiber-tutorial/internal/common"
+	"fiber-tutorial/internal/common/field"
 )
 
 type (

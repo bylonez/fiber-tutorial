@@ -1,9 +1,9 @@
 package user
 
 import (
-	"fiber-tutorial/common"
-	"fiber-tutorial/common/enum"
-	"fiber-tutorial/service/userservice"
+	"fiber-tutorial/internal/common"
+	"fiber-tutorial/internal/common/enum"
+	"fiber-tutorial/internal/service/userservice"
 	"fmt"
 	"github.com/gofiber/fiber/v2"
 )

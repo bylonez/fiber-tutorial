@@ -1,10 +1,10 @@
 package main
 
 import (
-	"fiber-tutorial/common"
-	"fiber-tutorial/handler"
-	_ "fiber-tutorial/model"
-	_ "fiber-tutorial/service/init"
+	"fiber-tutorial/internal/common"
+	"fiber-tutorial/internal/handler"
+	_ "fiber-tutorial/internal/model"
+	_ "fiber-tutorial/internal/service/init"
 	"github.com/gofiber/contrib/fiberzap/v2"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"

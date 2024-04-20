@@ -1,6 +1,6 @@
 package enum
 
-import "fiber-tutorial/common"
+import "fiber-tutorial/internal/common"
 
 type StatusEnum int
 

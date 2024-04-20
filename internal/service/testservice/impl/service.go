@@ -1,8 +1,8 @@
 package impl
 
 import (
-	"fiber-tutorial/service/testservice"
-	"fiber-tutorial/service/userservice"
+	"fiber-tutorial/internal/service/testservice"
+	"fiber-tutorial/internal/service/userservice"
 )
 
 type service struct{}

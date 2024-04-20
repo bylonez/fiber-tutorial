@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"fiber-tutorial/handler/user"
+	"fiber-tutorial/internal/handler/user"
 	"github.com/gofiber/fiber/v2"
 )
 
