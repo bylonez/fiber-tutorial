@@ -1,7 +1,7 @@
 package testservice
 
-type TestServiceI interface {
+type service interface {
 	Hello2() string
 }
 
-var TestService TestServiceI
+var Service service

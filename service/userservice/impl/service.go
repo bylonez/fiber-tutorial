@@ -16,7 +16,7 @@ func (s *service) Hello3() string {
 }
 
 func (s *service) Hello() string {
-	return testservice.TestService.Hello2()
+	return testservice.Service.Hello2()
 }
 
 func (s *service) List(query *userservice.UserQuery) []*userservice.UserDTO {

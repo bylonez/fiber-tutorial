@@ -13,5 +13,5 @@ func (t TestServiceImpl) Hello2() string {
 }
 
 func init() {
-	testservice.TestService = TestServiceImpl{}
+	testservice.Service = TestServiceImpl{}
 }
