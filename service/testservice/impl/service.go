@@ -5,13 +5,12 @@ import (
 	"fiber-tutorial/service/userservice"
 )
 
-type TestServiceImpl struct {
-}
-
-func (t TestServiceImpl) Hello2() string {
-	return userservice.Service.Hello3()
-}
+type service struct{}
 
 func init() {
-	testservice.Service = TestServiceImpl{}
+	testservice.Service = &service{}
+}
+
+func (t service) Hello2() string {
+	return userservice.Service.Hello3()
 }
