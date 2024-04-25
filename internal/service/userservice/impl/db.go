@@ -1,8 +1,8 @@
 package impl
 
 import (
-	"fiber-tutorial/internal/common/field"
 	"fiber-tutorial/internal/model"
+	"fiber-tutorial/internal/pkg/field"
 	"fiber-tutorial/internal/service/userservice"
 	"github.com/gofiber/fiber/v2/log"
 	"gorm.io/gorm"

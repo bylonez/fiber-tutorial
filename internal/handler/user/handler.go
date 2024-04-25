@@ -1,9 +1,10 @@
 package user
 
 import (
-	"fiber-tutorial/internal/common"
-	"fiber-tutorial/internal/common/enum"
+	"fiber-tutorial/internal/pkg"
+	"fiber-tutorial/internal/pkg/enum"
 	"fiber-tutorial/internal/service/userservice"
+	"fiber-tutorial/pkg/excel"
 	"fmt"
 	"github.com/gofiber/fiber/v2"
 )
@@ -11,23 +12,23 @@ import (
 func Handler(router fiber.Router) {
 	router.Get("/", func(c *fiber.Ctx) error {
 		userQuery := &userservice.UserQuery{}
-		common.Parse(userQuery, c.QueryParser)
-		return c.JSON(&common.Result{Data: userservice.Service.List(userQuery)})
+		pkg.Parse(userQuery, c.QueryParser)
+		return c.JSON(&pkg.Result{Data: userservice.Service.List(userQuery)})
 	})
 	router.Post("/", func(c *fiber.Ctx) error {
 		userCreateCmd := &userservice.UserCreateCmd{}
-		common.Parse(userCreateCmd, c.BodyParser)
+		pkg.Parse(userCreateCmd, c.BodyParser)
 		user := userservice.Service.Create(userCreateCmd)
-		return c.JSON(&common.Result{Data: user})
+		return c.JSON(&pkg.Result{Data: user})
 	})
 	router.Put("/", func(c *fiber.Ctx) error {
 		userCreateCmd := &userservice.UserUpdateCmd{}
-		common.Parse(userCreateCmd, c.BodyParser)
+		pkg.Parse(userCreateCmd, c.BodyParser)
 		user := userservice.Service.Update(userCreateCmd)
-		return c.JSON(&common.Result{Data: user})
+		return c.JSON(&pkg.Result{Data: user})
 	})
 	router.Get("/test_di", func(c *fiber.Ctx) error {
-		return c.JSON(&common.Result{Data: userservice.Service.Hello()})
+		return c.JSON(&pkg.Result{Data: userservice.Service.Hello()})
 	})
 
 	router.Get("/enums", func(c *fiber.Ctx) error {
@@ -39,12 +40,12 @@ func Handler(router fiber.Router) {
 		for _, statusEnum := range enum.StatusEnums {
 			result = append(result, EnumResult{Name: statusEnum.Name(), Desc: statusEnum.Desc()})
 		}
-		return c.JSON(&common.Result{Data: result})
+		return c.JSON(&pkg.Result{Data: result})
 	})
 
 	router.Get("/export", func(c *fiber.Ctx) error {
 		userQuery := &userservice.UserQuery{}
-		common.Parse(userQuery, c.QueryParser)
+		pkg.Parse(userQuery, c.QueryParser)
 		userDtos := userservice.Service.List(userQuery)
 		var vos []userExportVO
 		for _, userDTO := range userDtos {
@@ -56,14 +57,14 @@ func Handler(router fiber.Router) {
 			})
 		}
 		if vos == nil {
-			common.ExportEmptyData.Panic()
+			pkg.ExportEmptyData.Panic()
 		}
-		common.WriteResponse(vos, c)
+		excel.WriteResponse(vos, c)
 		return nil
 	})
 
 	router.Post("/import", func(c *fiber.Ctx) error {
-		for _, u := range common.ParseExcel[userImportCO](c, "file") {
+		for _, u := range excel.ParseExcel[userImportCO](c, "file") {
 			fmt.Println(*u)
 		}
 		return nil

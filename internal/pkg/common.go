@@ -1,4 +1,4 @@
-package common
+package pkg
 
 type Result struct {
 	Code int

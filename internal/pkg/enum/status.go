@@ -1,6 +1,8 @@
 package enum
 
-import "fiber-tutorial/internal/common"
+import (
+	"fiber-tutorial/pkg/map"
+)
 
 type StatusEnum int
 
@@ -21,7 +23,7 @@ var m = map[StatusEnum]statusStruct{
 	StatusCEnum: {"c name", "c desc"},
 }
 
-var StatusEnums = common.GetSortedKeys(m)
+var StatusEnums = _map.GetSortedKeys(m)
 
 func (e StatusEnum) Name() string {
 	return m[e].name
