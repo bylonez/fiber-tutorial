@@ -1,8 +1,8 @@
 package app
 
 import (
+	_ "fiber-tutorial/internal/database"
 	"fiber-tutorial/internal/handler"
-	_ "fiber-tutorial/internal/model"
 	"fiber-tutorial/internal/pkg"
 	_ "fiber-tutorial/internal/service/init"
 	"github.com/gofiber/contrib/fiberzap/v2"

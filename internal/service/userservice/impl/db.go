@@ -1,7 +1,7 @@
 package impl
 
 import (
-	"fiber-tutorial/internal/model"
+	"fiber-tutorial/internal/database"
 	"fiber-tutorial/internal/pkg/field"
 	"fiber-tutorial/internal/service/userservice"
 	"github.com/gofiber/fiber/v2/log"
@@ -17,8 +17,8 @@ type User struct {
 }
 
 func init() {
-	// AutoMigrate run auto migration for gorm model
-	err := model.DBConn.AutoMigrate(&User{})
+	// AutoMigrate run auto migration for gorm database
+	err := database.DBConn.AutoMigrate(&User{})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -26,16 +26,16 @@ func init() {
 
 func ListUser(query *userservice.UserQuery) []*User {
 	var users []*User
-	model.DBConn.Order("created_at desc").Limit(query.PageSize).Offset(query.Offset()).Find(&users)
+	database.DBConn.Order("created_at desc").Limit(query.PageSize).Offset(query.Offset()).Find(&users)
 	return users
 }
 
 func CreateUser(user *User) *User {
-	model.DBConn.Create(&user)
+	database.DBConn.Create(&user)
 	return user
 }
 
 func UpdateUser(user *User) *User {
-	model.DBConn.Updates(&user)
+	database.DBConn.Updates(&user)
 	return user
 }
