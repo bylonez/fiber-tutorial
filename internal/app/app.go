@@ -3,8 +3,8 @@ package app
 import (
 	"fiber-tutorial/internal/database"
 	"fiber-tutorial/internal/handler"
-	"fiber-tutorial/internal/pkg"
 	_ "fiber-tutorial/internal/service/init"
+	error2 "fiber-tutorial/pkg/error"
 	"github.com/gofiber/contrib/fiberzap/v2"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
@@ -16,7 +16,7 @@ import (
 
 func Run() {
 	app := fiber.New(fiber.Config{
-		ErrorHandler: pkg.ErrorHandler,
+		ErrorHandler: error2.ErrorHandler,
 	})
 	database.Init()
 
@@ -35,7 +35,7 @@ func Run() {
 	app.Use(recover.New(recover.Config{
 		EnableStackTrace: true,
 		StackTraceHandler: func(c *fiber.Ctx, e interface{}) {
-			_, ok := e.(pkg.ErrorPanic)
+			_, ok := e.(error2.ErrorPanic)
 			if !ok {
 				log.Errorf("[PANIC RECOVER] %s\n%s", e, debug.Stack())
 			}

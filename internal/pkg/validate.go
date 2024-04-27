@@ -1,6 +1,7 @@
 package pkg
 
 import (
+	error2 "fiber-tutorial/pkg/error"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2/log"
 )
@@ -14,7 +15,7 @@ func Valid(data any) {
 		for _, err := range errs.(validator.ValidationErrors) {
 			errors = append(errors, err.Error())
 		}
-		ParamInvalid.Panic(errors...)
+		error2.ParamInvalid.Panic(errors...)
 	}
 }
 
@@ -22,7 +23,7 @@ func Parse(data any, f func(out interface{}) error) {
 	err := f(data)
 	if err != nil {
 		log.Warn(err)
-		ParamInvalid.Panic()
+		error2.ParamInvalid.Panic()
 	}
 	Valid(data)
 }

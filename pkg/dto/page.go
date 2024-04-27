@@ -1,10 +1,4 @@
-package pkg
-
-type Result struct {
-	Code int
-	Data any
-	Msg  string
-}
+package dto
 
 type PageQuery struct {
 	Page     int

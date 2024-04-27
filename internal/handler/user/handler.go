@@ -2,8 +2,9 @@ package user
 
 import (
 	"fiber-tutorial/internal/pkg"
-	"fiber-tutorial/internal/pkg/enum"
 	"fiber-tutorial/internal/service/userservice"
+	"fiber-tutorial/pkg/dto"
+	error2 "fiber-tutorial/pkg/error"
 	"fiber-tutorial/pkg/excel"
 	"fmt"
 	"github.com/gofiber/fiber/v2"
@@ -13,22 +14,22 @@ func Handler(router fiber.Router) {
 	router.Get("/", func(c *fiber.Ctx) error {
 		userQuery := &userservice.UserQuery{}
 		pkg.Parse(userQuery, c.QueryParser)
-		return c.JSON(&pkg.Result{Data: userservice.Service.List(userQuery)})
+		return c.JSON(&dto.Result{Data: userservice.Service.List(userQuery)})
 	})
 	router.Post("/", func(c *fiber.Ctx) error {
 		userCreateCmd := &userservice.UserCreateCmd{}
 		pkg.Parse(userCreateCmd, c.BodyParser)
 		user := userservice.Service.Create(userCreateCmd)
-		return c.JSON(&pkg.Result{Data: user})
+		return c.JSON(&dto.Result{Data: user})
 	})
 	router.Put("/", func(c *fiber.Ctx) error {
 		userCreateCmd := &userservice.UserUpdateCmd{}
 		pkg.Parse(userCreateCmd, c.BodyParser)
 		user := userservice.Service.Update(userCreateCmd)
-		return c.JSON(&pkg.Result{Data: user})
+		return c.JSON(&dto.Result{Data: user})
 	})
 	router.Get("/test_di", func(c *fiber.Ctx) error {
-		return c.JSON(&pkg.Result{Data: userservice.Service.Hello()})
+		return c.JSON(&dto.Result{Data: userservice.Service.Hello()})
 	})
 
 	router.Get("/enums", func(c *fiber.Ctx) error {
@@ -37,10 +38,10 @@ func Handler(router fiber.Router) {
 			Desc string
 		}
 		var result []EnumResult
-		for _, statusEnum := range enum.StatusEnums {
+		for _, statusEnum := range userservice.StatusEnums {
 			result = append(result, EnumResult{Name: statusEnum.Name(), Desc: statusEnum.Desc()})
 		}
-		return c.JSON(&pkg.Result{Data: result})
+		return c.JSON(&dto.Result{Data: result})
 	})
 
 	router.Get("/export", func(c *fiber.Ctx) error {
@@ -57,7 +58,7 @@ func Handler(router fiber.Router) {
 			})
 		}
 		if vos == nil {
-			pkg.ExportEmptyData.Panic()
+			error2.ExportEmptyData.Panic()
 		}
 		excel.WriteResponse(vos, c)
 		return nil

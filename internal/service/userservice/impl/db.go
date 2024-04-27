@@ -2,8 +2,8 @@ package impl
 
 import (
 	"fiber-tutorial/internal/database"
-	"fiber-tutorial/internal/pkg/field"
 	"fiber-tutorial/internal/service/userservice"
+	"fiber-tutorial/pkg/field"
 	"gorm.io/gorm"
 )
 

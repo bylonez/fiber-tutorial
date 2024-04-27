@@ -1,7 +1,8 @@
-package pkg
+package error
 
 import (
 	"errors"
+	"fiber-tutorial/pkg/dto"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -15,7 +16,7 @@ func ErrorHandler(c *fiber.Ctx, err error) error {
 		statusCode = fiber.StatusBadRequest
 		resultCode = int(value.err)
 	}
-	return c.Status(statusCode).JSON(Result{
+	return c.Status(statusCode).JSON(dto.Result{
 		Code: resultCode,
 		Msg:  err.Error()},
 	)

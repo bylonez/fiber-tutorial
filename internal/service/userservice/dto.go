@@ -1,8 +1,8 @@
 package userservice
 
 import (
-	"fiber-tutorial/internal/pkg"
-	"fiber-tutorial/internal/pkg/field"
+	"fiber-tutorial/pkg/dto"
+	"fiber-tutorial/pkg/field"
 )
 
 type (
@@ -27,7 +27,7 @@ type (
 	}
 
 	UserQuery struct {
-		pkg.PageQuery
+		dto.PageQuery
 		Name string
 	}
 )

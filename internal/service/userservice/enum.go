@@ -1,4 +1,4 @@
-package enum
+package userservice
 
 import (
 	"fiber-tutorial/pkg/map"
