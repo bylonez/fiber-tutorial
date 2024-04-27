@@ -1,4 +1,4 @@
-package validate
+package valid
 
 import (
 	error2 "fiber-tutorial/pkg/error"
@@ -6,10 +6,10 @@ import (
 	"github.com/gofiber/fiber/v2/log"
 )
 
-var Validate = validator.New()
+var validate = validator.New()
 
 func Valid(data any) {
-	errs := Validate.Struct(data)
+	errs := validate.Struct(data)
 	if errs != nil {
 		var errors []any
 		for _, err := range errs.(validator.ValidationErrors) {
@@ -28,12 +28,8 @@ func Parse(data any, f func(out interface{}) error) {
 	Valid(data)
 }
 
-func init() {
-	// Custom struct validation tag format
-	err := Validate.RegisterValidation("teener", func(fl validator.FieldLevel) bool {
-		// User.Age needs to fit our needs, 12-18 years old.
-		return fl.Field().Int() >= 12 && fl.Field().Int() <= 18
-	})
+func Register(tag string, fn validator.Func, callValidationEvenIfNull ...bool) {
+	err := validate.RegisterValidation(tag, fn, callValidationEvenIfNull...)
 	if err != nil {
 		log.Fatal(err)
 	}

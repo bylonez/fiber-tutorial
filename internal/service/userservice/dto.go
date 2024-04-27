@@ -3,6 +3,8 @@ package userservice
 import (
 	"fiber-tutorial/pkg/dto"
 	"fiber-tutorial/pkg/field"
+	"fiber-tutorial/pkg/valid"
+	"github.com/go-playground/validator/v10"
 )
 
 type (
@@ -14,14 +16,14 @@ type (
 	}
 
 	UserCreateCmd struct {
-		Name     string `validate:"required,min=3,max=20"`
+		Name     string `valid:"required,min=3,max=20"`
 		Birthday field.Date
-		Gender   string
+		Gender   string `valid:"required,gender"`
 	}
 
 	UserUpdateCmd struct {
 		Id       uint
-		Name     string `validate:"required,min=3,max=20"`
+		Name     string `valid:"required,min=3,max=20"`
 		Birthday field.Date
 		Gender   string
 	}
@@ -31,3 +33,9 @@ type (
 		Name string
 	}
 )
+
+func init() {
+	valid.Register("gender", func(fl validator.FieldLevel) bool {
+		return fl.Field().String() == "male" || fl.Field().String() == "female"
+	})
+}
