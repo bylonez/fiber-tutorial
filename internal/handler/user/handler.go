@@ -1,11 +1,11 @@
 package user
 
 import (
-	"fiber-tutorial/internal/pkg"
 	"fiber-tutorial/internal/service/userservice"
 	"fiber-tutorial/pkg/dto"
 	error2 "fiber-tutorial/pkg/error"
 	"fiber-tutorial/pkg/excel"
+	"fiber-tutorial/pkg/validate"
 	"fmt"
 	"github.com/gofiber/fiber/v2"
 )
@@ -13,18 +13,18 @@ import (
 func Handler(router fiber.Router) {
 	router.Get("/", func(c *fiber.Ctx) error {
 		userQuery := &userservice.UserQuery{}
-		pkg.Parse(userQuery, c.QueryParser)
+		validate.Parse(userQuery, c.QueryParser)
 		return c.JSON(&dto.Result{Data: userservice.Service.List(userQuery)})
 	})
 	router.Post("/", func(c *fiber.Ctx) error {
 		userCreateCmd := &userservice.UserCreateCmd{}
-		pkg.Parse(userCreateCmd, c.BodyParser)
+		validate.Parse(userCreateCmd, c.BodyParser)
 		user := userservice.Service.Create(userCreateCmd)
 		return c.JSON(&dto.Result{Data: user})
 	})
 	router.Put("/", func(c *fiber.Ctx) error {
 		userCreateCmd := &userservice.UserUpdateCmd{}
-		pkg.Parse(userCreateCmd, c.BodyParser)
+		validate.Parse(userCreateCmd, c.BodyParser)
 		user := userservice.Service.Update(userCreateCmd)
 		return c.JSON(&dto.Result{Data: user})
 	})
@@ -46,7 +46,7 @@ func Handler(router fiber.Router) {
 
 	router.Get("/export", func(c *fiber.Ctx) error {
 		userQuery := &userservice.UserQuery{}
-		pkg.Parse(userQuery, c.QueryParser)
+		validate.Parse(userQuery, c.QueryParser)
 		userDtos := userservice.Service.List(userQuery)
 		var vos []userExportVO
 		for _, userDTO := range userDtos {

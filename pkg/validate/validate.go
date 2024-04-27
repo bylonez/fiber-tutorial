@@ -1,4 +1,4 @@
-package pkg
+package validate
 
 import (
 	error2 "fiber-tutorial/pkg/error"
