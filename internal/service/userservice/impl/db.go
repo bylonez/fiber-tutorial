@@ -4,7 +4,6 @@ import (
 	"fiber-tutorial/internal/database"
 	"fiber-tutorial/internal/pkg/field"
 	"fiber-tutorial/internal/service/userservice"
-	"github.com/gofiber/fiber/v2/log"
 	"gorm.io/gorm"
 )
 
@@ -17,25 +16,21 @@ type User struct {
 }
 
 func init() {
-	// AutoMigrate run auto migration for gorm database
-	err := database.DBConn.AutoMigrate(&User{})
-	if err != nil {
-		log.Fatal(err)
-	}
+	database.RegModel(&User{})
 }
 
 func ListUser(query *userservice.UserQuery) []*User {
 	var users []*User
-	database.DBConn.Order("created_at desc").Limit(query.PageSize).Offset(query.Offset()).Find(&users)
+	database.DB.Order("created_at desc").Limit(query.PageSize).Offset(query.Offset()).Find(&users)
 	return users
 }
 
 func CreateUser(user *User) *User {
-	database.DBConn.Create(&user)
+	database.DB.Create(&user)
 	return user
 }
 
 func UpdateUser(user *User) *User {
-	database.DBConn.Updates(&user)
+	database.DB.Updates(&user)
 	return user
 }

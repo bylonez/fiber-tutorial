@@ -8,14 +8,28 @@ import (
 )
 
 var (
-	DBConn *gorm.DB
+	DB     *gorm.DB
+	models []any
 )
 
-func init() {
+func InitDB() {
 	var err error
-	DBConn, err = gorm.Open(sqlite.Open("sqlite3.db"), &gorm.Config{})
+	DB, err = gorm.Open(sqlite.Open("sqlite3.db"))
 	if err != nil {
 		log.Fatal("failed to connect database")
 	}
+	migrationModel()
+}
 
+func RegModel(model any) {
+	models = append(models, model)
+}
+
+func migrationModel() {
+	for _, model := range models {
+		err := DB.AutoMigrate(model)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
 }

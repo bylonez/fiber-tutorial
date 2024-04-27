@@ -1,7 +1,7 @@
 package app
 
 import (
-	_ "fiber-tutorial/internal/database"
+	"fiber-tutorial/internal/database"
 	"fiber-tutorial/internal/handler"
 	"fiber-tutorial/internal/pkg"
 	_ "fiber-tutorial/internal/service/init"
@@ -18,6 +18,7 @@ func Run() {
 	app := fiber.New(fiber.Config{
 		ErrorHandler: pkg.ErrorHandler,
 	})
+	database.InitDB()
 
 	// middleware
 	// request id
