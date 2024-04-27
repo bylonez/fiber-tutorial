@@ -12,7 +12,7 @@ var (
 	models []any
 )
 
-func InitDB() {
+func Init() {
 	var err error
 	DB, err = gorm.Open(sqlite.Open("sqlite3.db"))
 	if err != nil {

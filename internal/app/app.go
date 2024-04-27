@@ -18,7 +18,7 @@ func Run() {
 	app := fiber.New(fiber.Config{
 		ErrorHandler: pkg.ErrorHandler,
 	})
-	database.InitDB()
+	database.Init()
 
 	// middleware
 	// request id
