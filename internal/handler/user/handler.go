@@ -3,7 +3,7 @@ package user
 import (
 	"fiber-tutorial/internal/service/userservice"
 	"fiber-tutorial/pkg/dto"
-	error2 "fiber-tutorial/pkg/error"
+	"fiber-tutorial/pkg/ex"
 	"fiber-tutorial/pkg/excel"
 	"fiber-tutorial/pkg/valid"
 	"fmt"
@@ -58,7 +58,7 @@ func Handler(router fiber.Router) {
 			})
 		}
 		if vos == nil {
-			error2.ExportEmptyData.Panic()
+			ex.ExportEmptyData.Panic()
 		}
 		excel.WriteResponse(vos, c)
 		return nil
