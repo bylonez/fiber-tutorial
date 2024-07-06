@@ -5,11 +5,13 @@ import (
 	"fiber-tutorial/internal/handler"
 	_ "fiber-tutorial/internal/service/init"
 	"fiber-tutorial/pkg/ex"
+	"fiber-tutorial/pkg/fiberzap"
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/log"
 	"github.com/gofiber/fiber/v3/middleware/cors"
 	"github.com/gofiber/fiber/v3/middleware/recover"
 	"github.com/gofiber/fiber/v3/middleware/requestid"
+	"go.uber.org/zap"
 	"runtime/debug"
 )
 
@@ -23,13 +25,13 @@ func Run() {
 	// request id
 	app.Use(requestid.New())
 	// logger
-	//logger, _ := zap.NewDevelopment()
-	//log.SetLogger(fiberzap.NewLogger(fiberzap.LoggerConfig{
-	//	SetLogger: logger,
-	//}))
-	//app.Use(fiberzap.New(fiberzap.Config{
-	//	Logger: logger,
-	//}))
+	logger, _ := zap.NewDevelopment()
+	log.SetLogger(fiberzap.NewLogger(fiberzap.LoggerConfig{
+		SetLogger: logger,
+	}))
+	app.Use(fiberzap.New(fiberzap.Config{
+		Logger: logger,
+	}))
 	// recover from panic and log
 	app.Use(recover.New(recover.Config{
 		EnableStackTrace: true,
