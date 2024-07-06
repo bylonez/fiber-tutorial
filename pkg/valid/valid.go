@@ -3,7 +3,7 @@ package valid
 import (
 	"fiber-tutorial/pkg/ex"
 	"github.com/go-playground/validator/v10"
-	"github.com/gofiber/fiber/v2/log"
+	"github.com/gofiber/fiber/v3/log"
 )
 
 var validate = validator.New()

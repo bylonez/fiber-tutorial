@@ -2,7 +2,7 @@ package excel
 
 import (
 	"fmt"
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 	"github.com/xuri/excelize/v2"
 	"log"
 	"reflect"
@@ -58,7 +58,7 @@ func parseTag[tagT, objT any]() []*tagT {
 	return tags
 }
 
-func WriteResponse[T any](objs []T, c *fiber.Ctx) {
+func WriteResponse[T any](objs []T, c fiber.Ctx) {
 	f := excelize.NewFile()
 	defer func() {
 		if err := f.Close(); err != nil {
@@ -104,7 +104,7 @@ func WriteResponse[T any](objs []T, c *fiber.Ctx) {
 	c.Response().Header.Set("Content-Disposition", "attachment; filename="+filename)
 }
 
-func ParseExcel[T any](c *fiber.Ctx, key string) []*T {
+func ParseExcel[T any](c fiber.Ctx, key string) []*T {
 	formFile, err := c.FormFile(key)
 	if err != nil {
 		log.Fatal(err)

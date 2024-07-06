@@ -3,11 +3,11 @@ package ex
 import (
 	"errors"
 	"fiber-tutorial/pkg/dto"
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 )
 
 // ErrorHandler handle panic
-func ErrorHandler(c *fiber.Ctx, err error) error {
+func ErrorHandler(c fiber.Ctx, err error) error {
 	statusCode := fiber.StatusInternalServerError
 	resultCode := fiber.StatusInternalServerError
 	var value ExceptionPanic
