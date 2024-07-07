@@ -2,7 +2,7 @@ package ex
 
 import (
 	"errors"
-	"fiber-tutorial/pkg/dto"
+	"github.com/bylonez/fiber-tutorial/pkg/dto"
 	"github.com/gofiber/fiber/v3"
 )
 

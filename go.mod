@@ -1,4 +1,4 @@
-module fiber-tutorial
+module github.com/bylonez/fiber-tutorial
 
 go 1.22
 

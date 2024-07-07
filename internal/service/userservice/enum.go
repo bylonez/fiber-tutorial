@@ -1,7 +1,7 @@
 package userservice
 
 import (
-	"fiber-tutorial/pkg/map"
+	"github.com/bylonez/fiber-tutorial/pkg/map"
 )
 
 type StatusEnum int

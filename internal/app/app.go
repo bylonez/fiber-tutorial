@@ -1,11 +1,11 @@
 package app
 
 import (
-	"fiber-tutorial/internal/database"
-	"fiber-tutorial/internal/handler"
-	_ "fiber-tutorial/internal/service/init"
-	"fiber-tutorial/pkg/ex"
-	"fiber-tutorial/pkg/fiberzap"
+	"github.com/bylonez/fiber-tutorial/internal/database"
+	"github.com/bylonez/fiber-tutorial/internal/handler"
+	_ "github.com/bylonez/fiber-tutorial/internal/service/init"
+	"github.com/bylonez/fiber-tutorial/pkg/ex"
+	"github.com/bylonez/fiber-tutorial/pkg/fiberzap"
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/log"
 	"github.com/gofiber/fiber/v3/middleware/cors"

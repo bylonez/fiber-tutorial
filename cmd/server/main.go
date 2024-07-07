@@ -1,6 +1,6 @@
 package main
 
-import "fiber-tutorial/internal/app"
+import "github.com/bylonez/fiber-tutorial/internal/app"
 
 func main() {
 	app.Run()

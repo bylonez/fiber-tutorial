@@ -1,6 +1,6 @@
 package impl
 
-import "fiber-tutorial/internal/service/userservice"
+import "github.com/bylonez/fiber-tutorial/internal/service/userservice"
 
 func createCmdToUser(c *userservice.UserCreateCmd) *User {
 	return &User{

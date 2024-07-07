@@ -1,12 +1,12 @@
 package user
 
 import (
-	"fiber-tutorial/internal/service/userservice"
-	"fiber-tutorial/pkg/dto"
-	"fiber-tutorial/pkg/ex"
-	"fiber-tutorial/pkg/excel"
-	"fiber-tutorial/pkg/valid"
 	"fmt"
+	"github.com/bylonez/fiber-tutorial/internal/service/userservice"
+	"github.com/bylonez/fiber-tutorial/pkg/dto"
+	"github.com/bylonez/fiber-tutorial/pkg/ex"
+	"github.com/bylonez/fiber-tutorial/pkg/excel"
+	"github.com/bylonez/fiber-tutorial/pkg/valid"
 	"github.com/gofiber/fiber/v3"
 )
 

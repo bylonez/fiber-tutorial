@@ -1,6 +1,6 @@
 package user
 
-import "fiber-tutorial/pkg/field"
+import "github.com/bylonez/fiber-tutorial/pkg/field"
 
 type userExportVO struct {
 	Id       uint       `excel:"head:id"`

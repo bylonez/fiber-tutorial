@@ -1,9 +1,9 @@
 package userservice
 
 import (
-	"fiber-tutorial/pkg/dto"
-	"fiber-tutorial/pkg/field"
-	"fiber-tutorial/pkg/valid"
+	"github.com/bylonez/fiber-tutorial/pkg/dto"
+	"github.com/bylonez/fiber-tutorial/pkg/field"
+	"github.com/bylonez/fiber-tutorial/pkg/valid"
 	"github.com/go-playground/validator/v10"
 )
 
