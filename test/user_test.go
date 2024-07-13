@@ -7,11 +7,7 @@ import (
 )
 
 func TestEnums(t *testing.T) {
-	test := newTest(t, httptest.NewRequest(http.MethodGet, "/user/test_di", nil))
-	test.checkStatusCode()
-	body := test.getBody()
-	expected := "hello3 result"
-	if body != expected {
-		t.Errorf("Expected body to be %v, got %v", expected, body)
-	}
+	newTest(t, httptest.NewRequest(http.MethodGet, "/user/test_di", nil)).
+		checkStatusCode().
+		checkBody("hello3 result")
 }
